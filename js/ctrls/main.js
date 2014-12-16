@@ -429,7 +429,9 @@ function(
 					cfile.index = +file.index;
 					cfile.path = file.path;
 					cfile.length = file.length;
+					cfile.completedLength = file.completedLength;
 					cfile.fmtLength = utils.fmtsize(file.length);
+					cfile.fmtCompletedLength = utils.fmtsize(file.completedLength);
 					cfile.relpath = file.path.replace(re_slashes, slash);
 					if (!cfile.relpath) {
 						cfile.relpath = (file.uris && file.uris[0] && file.uris[0].uri) || "Unknown";
@@ -509,7 +511,15 @@ function(
 
 		return percentage;
 	};
+	// gets the progress in percentages for files
+	scope.getProgressFiles = function(d) {
+		var percentage = (d.completedLength / d.length)*100 || 0;
+		percentage = percentage.toFixed(2);
+		if(!percentage) percentage = 0;
+		if(percentage>100) percentage = 100;
 
+		return percentage;
+	};
 	// gets the type for the download as classified by the aria2 rpc calls
 	scope.getType = function(d) {
 		var type = d.status;
