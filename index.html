@@ -588,8 +588,12 @@
               <li class="label" title="Piece Length"><i class="fa fa-fw fa-puzzle-piece"></i> Length&nbsp; <span class="download-pieceLength">{{download.fmtPieceLength}}</span></li>
               <li class="label" title="Download Path"><i class="fa fa-fw fa-folder-open">&nbsp;</i> <span class="download-dir">{{download.dir}}</span></li>
             </ul>
-            <ul class="download-files hidden-phone download-item">
-              <li class="label" ng-repeat="file in download.files" ng-class="{'label-success': file.selected}">{{file.relpath}} ({{file.fmtLength}})</li>
+            <ul class="download-progress hidden-phone download-item" ng-repeat="file in download.files">
+      			  <div class="progress progress-striped progress-file" ng-class="{'progress-danger': file.selected == 'true', 'progress-success': file.completedLength == file.length, 'progress-warning': file.completedLength >= file.length}">
+        				<li class="file">{{file.relpath}} ({{file.fmtCompletedLength}}/{{file.fmtLength}})</li>
+        				<div class="bar bar-file" style="width: {{getProgressFiles(file)}}%;">
+        				</div>
+      			  </div>
             </ul>
             <div ng-show="hasStatus(download, 'active')" class="download-item hidden-phone">
               <div class="download-graph" dspeed="download.downloadSpeed" uspeed="download.uploadSpeed" xticks="7" yticks="7"  dgraph draw="!download.collapsed"></div>
